@@ -225,7 +225,7 @@ class ShineButton : PorterShapeImageView {
     fun showAnim() {
         if (activity != null) {
             val rootView = activity!!.findViewById<View>(Window.ID_ANDROID_CONTENT) as ViewGroup
-            shineView = ShineView(activity, this, shineParams)
+            shineView = ShineView(activity!!, this, shineParams)
             rootView.addView(shineView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
             doShareAnim()
         } else {
