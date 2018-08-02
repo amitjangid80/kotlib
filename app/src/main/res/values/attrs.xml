@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <declare-styleable name="BaseButton">
+        <attr name="iconSize" format="dimension" />
+        <attr name="iconPadding" format="dimension" />
+        <attr name="iconCenterAligned" format="boolean" />
+        <attr name="roundedCorner" format="boolean" />
+        <attr name="transparentBackground" format="boolean" />
+        <attr name="roundedCornerRadius" format="dimension" />
+        <attr name="android:textColor" tools:ignore="ResourceName" />
+    </declare-styleable>
+
+    <declare-styleable name="CircularImageView">
+        <attr name="strokeColor" format="color" />
+        <attr name="imgStrokeWidth" format="dimension" />
+        <attr name="highlightEnable" format="boolean" />
+        <attr name="highlightColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="AvatarImageView">
+        <attr name="avatar_backgroundColor" format="color" />
+        <attr name="avatar_textSize" format="dimension" />
+        <attr name="avatar_textColor" format="color" />
+        <attr name="avatar_text" format="string" />
+        <attr name="avatar_state" format="enum">
+            <enum name="INITIAL" value="1" />
+            <enum name="IMAGE" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="ProgressButton">
+        <attr name="progress_bar_width" format="dimension" />
+        <attr name="progress_bar_color" format="color" />
+        <attr name="progress_bar_padding" format="dimension" />
+        <attr name="initial_corner_radius" format="dimension" />
+        <attr name="final_corner_radius" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="SwitchButton">
+        <attr name="strokeRadius" format="dimension" />
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="textSize" format="dimension" />
+        <attr name="selectedTab" format="integer" />
+        <attr name="selectedColor" format="color|reference" />
+        <attr name="switchTabs" format="reference" />
+        <attr name="typeface" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="ShineButton">
+        <attr name="btn_color" format="color" />
+        <attr name="btn_fill_color" format="color" />
+        <attr name="shine_count" format="integer" />
+        <attr name="shine_turn_angle" format="float" />
+        <attr name="small_shine_offset_angle" format="float" />
+        <attr name="enable_flashing" format="boolean" />
+        <attr name="allow_random_color" format="boolean" />
+        <attr name="small_shine_color" format="color" />
+        <attr name="big_shine_color" format="color" />
+        <attr name="shine_animation_duration" format="integer" />
+        <attr name="click_animation_duration" format="integer" />
+        <attr name="shine_distance_multiple" format="float" />
+        <attr name="shine_size" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="PorterShapeImageView">
+        <attr name="siShape" format="integer|reference" />
+    </declare-styleable>
+
+</resources>
