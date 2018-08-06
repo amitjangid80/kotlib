@@ -1,13 +1,17 @@
 # kotlib
 
 ### Usage
-`allprojects {
+```
+allprojects {
 		repositories {
 		...
 		maven { url 'https://jitpack.io' }
 	}
-}`
+}
+```
  
-`dependencies {
+```
+dependencies {
     implementation 'com.github.amitjangid80:kotlib:v1.0.1'
-}`
+}
+```
