@@ -23,12 +23,12 @@ import java.net.URL
  * 2018 April 17 - Tuesday - 12:56 PM
  **/
 
-class ApiServices(context: Context) {
-
+class ApiServices(context: Context)
+{
     var mResponseCode = 0
     private val apiPath: String
-    val deviceID: String
-    private val sharedPreferenceData: SharedPreferenceData
+    private val deviceID: String
+    private val sharedPreferenceData: SharedPreferenceData = SharedPreferenceData(context)
 
     /**
      * get device name method
@@ -37,20 +37,23 @@ class ApiServices(context: Context) {
      * this method will get the name of the device
      */
     val deviceName: String
-        get() {
+        get()
+        {
             val manufacturer = Build.MANUFACTURER
             val model = Build.MODEL
 
-            return if (model.startsWith(manufacturer)) {
+            return if (model.startsWith(manufacturer))
+            {
                 capitalizeString(model)
-            } else {
+            }
+            else
+            {
                 capitalizeString("$manufacturer $model")
             }
         }
 
-    init {
-        this.sharedPreferenceData = SharedPreferenceData(context)
-
+    init
+    {
         // set api path before using it
         // this path will consist of the url which is repeated in every api
         // Ex: http://www.example.com/api/
@@ -68,16 +71,21 @@ class ApiServices(context: Context) {
      * @param string - string to capitalize
      * return - will return the string which was passed in capitalize form
      */
-    private fun capitalizeString(string: String?): String {
-        if (string == null || string.isEmpty()) {
+    private fun capitalizeString(string: String?): String
+    {
+        if (string == null || string.isEmpty())
+        {
             return ""
         }
 
         val first = string[0]
 
-        return if (Character.isUpperCase(first)) {
+        return if (Character.isUpperCase(first))
+        {
             string
-        } else {
+        }
+        else
+        {
             Character.toUpperCase(first) + string.substring(1)
         }
     }
@@ -127,11 +135,13 @@ class ApiServices(context: Context) {
      *
      *
      * ***********************************************************************************************
-     */
+    **/
     fun makeAPICall(apiName: String, requestMethod: String,
                     parameters: Boolean, values: JSONObject,
-                    hasToken: Boolean): String? {
-        try {
+                    hasToken: Boolean): String?
+    {
+        try
+        {
             val result: String
             val url = URL(apiPath + apiName)
 
@@ -141,7 +151,8 @@ class ApiServices(context: Context) {
             httpURLConnection.addRequestProperty("Content-Type", "application/json; charset=utf-8")
             httpURLConnection.addRequestProperty("IsDeviceMode", "1")
 
-            if (hasToken) {
+            if (hasToken)
+            {
                 httpURLConnection.addRequestProperty("x-access-token", sharedPreferenceData.getValue("token"))
                 Log.e(TAG, "makeAPICall: x-access-token is: " + sharedPreferenceData.getValue("token"))
             }
@@ -150,7 +161,8 @@ class ApiServices(context: Context) {
             httpURLConnection.setRequestProperty("Connection", "close")
             Log.e(TAG, "makeAPICall: api = $url   values = $values")
 
-            if (parameters) {
+            if (parameters)
+            {
                 httpURLConnection.doOutput = true
                 val outputStream = DataOutputStream(httpURLConnection.outputStream)
                 outputStream.writeBytes(values.toString())
@@ -162,19 +174,23 @@ class ApiServices(context: Context) {
             mResponseCode = responseCode
             Log.e(TAG, "makeAPICall: response code from api is: $mResponseCode")
 
-            if (responseCode == 200) {
+            if (responseCode == 200)
+            {
                 val bufferedReader = BufferedReader(InputStreamReader(httpURLConnection.inputStream))
                 val stringBuilder = StringBuilder()
                 var line: String? = null
 
-                while ({line = bufferedReader.readLine(); line}() != null) {
+                while ({line = bufferedReader.readLine(); line}() != null)
+                {
                     stringBuilder.append(line).append("\n")
                 }
 
                 bufferedReader.close()
                 result = stringBuilder.toString()
                 Log.e(TAG, "makeAPICall: result from server is: $result")
-            } else {
+            }
+            else
+            {
                 val responseMessage = httpURLConnection.responseMessage
                 Log.e(TAG, "makeAPICall: response message: $responseMessage")
 
@@ -182,7 +198,8 @@ class ApiServices(context: Context) {
                 val stringBuilder = StringBuilder()
                 var line: String? = null
 
-                while ({line = bufferedReader.readLine(); line}() != null) {
+                while ({line = bufferedReader.readLine(); line}() != null)
+                {
                     stringBuilder.append(line).append("\n")
                 }
 
@@ -192,12 +209,13 @@ class ApiServices(context: Context) {
             }
 
             return result
-        } catch (e: Exception) {
+        }
+        catch (e: Exception)
+        {
             Log.e(TAG, "makeAPICall: in web api services class:\n")
             e.printStackTrace()
             return null
         }
-
     }
 
     /**
@@ -218,12 +236,14 @@ class ApiServices(context: Context) {
      * where integer will be the response code
      * and bitmap will be the file uploaded.
      */
-    fun getBitmapData(apiPath: String, requestType: String, parameter: String?): Pair<Int, Bitmap> {
+    fun getBitmapData(apiPath: String, requestType: String, parameter: String?): Pair<Int, Bitmap>
+    {
         var resultVal: Bitmap? = null
         val iStream: InputStream
         var responseCode = 0
 
-        try {
+        try
+        {
             val urlConnect = URL(apiPath)
             val urlConnection = urlConnect.openConnection() as HttpURLConnection
 
@@ -236,7 +256,8 @@ class ApiServices(context: Context) {
             Log.e(TAG, "getBitmapData: x-access-token is: " + sharedPreferenceData.getValue("token"))
             urlConnection.connectTimeout = 30000
 
-            if (parameter != null) {
+            if (parameter != null)
+            {
                 urlConnection.doOutput = true
                 val outputStream = DataOutputStream(urlConnection.outputStream)
                 outputStream.writeBytes(parameter)
@@ -244,28 +265,38 @@ class ApiServices(context: Context) {
                 outputStream.close()
             }
 
-            try {
+            try
+            {
                 responseCode = urlConnection.responseCode
                 Log.e(TAG, "Response Code from api is --  $responseCode")
 
-                if (responseCode == 200) {
+                if (responseCode == 200)
+                {
                     iStream = urlConnection.inputStream
 
                     /*Creating a bitmap from the stream returned from the apiPath */
                     resultVal = BitmapFactory.decodeStream(iStream)
                     Log.e(TAG, "getBitmapData: result from server is: " + resultVal!!)
-                } else {
+                }
+                else
+                {
                     val str = urlConnection.responseMessage
                     Log.e(TAG, "getBitmapData: response message from api is:$str")
                 }
-            } catch (ex: Exception) {
+            }
+            catch (ex: Exception)
+            {
                 Log.e(TAG, "getBitmapData: exception while downloading images from api:\n")
                 ex.printStackTrace()
-            } finally {
+            }
+            finally
+            {
                 urlConnection.disconnect()
                 Log.e(TAG, "URL in finally is >$apiPath<-->$resultVal")
             }
-        } catch (e: Exception) {
+        }
+        catch (e: Exception)
+        {
             Log.e(TAG, "Exception while geting bitmap:")
             e.printStackTrace()
             return Pair(responseCode, resultVal)
@@ -274,7 +305,8 @@ class ApiServices(context: Context) {
         return Pair(responseCode, resultVal)
     }
 
-    companion object {
+    companion object
+    {
         private val TAG = ApiServices::class.java.simpleName
     }
 }
