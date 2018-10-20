@@ -15,6 +15,6 @@ allprojects {
  
 ```
 dependencies {
-    implementation 'com.github.amitjangid80:kotlib:v1.0.2'
+    implementation 'com.github.amitjangid80:kotlib:1.0.3'
 }
 ```
