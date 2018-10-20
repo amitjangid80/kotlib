@@ -18,23 +18,20 @@ import android.view.animation.LinearInterpolator
 
 import com.amit.kotlib.R
 
-class ShineButton : PorterShapeImageView {
+@Suppress("MemberVisibilityCanBePrivate", "unused", "RedundantOverride", "DEPRECATION")
+class ShineButton : PorterShapeImageView
+{
     private var isChecked = false
-
     private var btnColor: Int = 0
+
     var color: Int = 0
         private set
 
-    internal var DEFAULT_WIDTH = 50
-    internal var DEFAULT_HEIGHT = 50
-
     internal var metrics: DisplayMetrics? = DisplayMetrics()
-
     internal var activity: Activity? = null
     internal lateinit var shineView: ShineView
     internal var shakeAnimator: ValueAnimator? = null
     internal var shineParams = ShineView.ShineParams()
-
     internal var listener: OnCheckedChangeListener? = null
 
     private var bottomHeight: Int = 0
@@ -42,24 +39,28 @@ class ShineButton : PorterShapeImageView {
 
     internal var onButtonClickListener: OnButtonClickListener? = null
 
-    constructor(context: Context) : super(context) {
-
-        if (context is Activity) {
+    constructor(context: Context) : super(context)
+    {
+        if (context is Activity)
+        {
             init(context)
         }
     }
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    {
         initButton(context, attrs)
     }
 
-
-    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
+    {
         initButton(context, attrs)
     }
 
-    private fun initButton(context: Context, attrs: AttributeSet) {
-        if (context is Activity) {
+    private fun initButton(context: Context, attrs: AttributeSet)
+    {
+        if (context is Activity)
+        {
             init(context)
         }
 
@@ -81,176 +82,226 @@ class ShineButton : PorterShapeImageView {
         setSrcColor(btnColor)
     }
 
-    fun getBottomHeight(real: Boolean): Int {
-        return if (real) {
+    fun getBottomHeight(real: Boolean): Int
+    {
+        return if (real)
+        {
             realBottomHeight
         } else bottomHeight
 
     }
 
-    fun isChecked(): Boolean {
+    fun isChecked(): Boolean
+    {
         return isChecked
     }
 
-
-    fun setBtnColor(btnColor: Int) {
+    fun setBtnColor(btnColor: Int)
+    {
         this.btnColor = btnColor
         setSrcColor(this.btnColor)
     }
 
-    fun setBtnFillColor(btnFillColor: Int) {
+    fun setBtnFillColor(btnFillColor: Int)
+    {
         this.color = btnFillColor
     }
 
-    fun setChecked(checked: Boolean, anim: Boolean) {
+    fun setChecked(checked: Boolean, anim: Boolean)
+    {
         setChecked(checked, anim, true)
     }
 
-    private fun setChecked(checked: Boolean, anim: Boolean, callBack: Boolean) {
+    private fun setChecked(checked: Boolean, anim: Boolean, callBack: Boolean)
+    {
         isChecked = checked
 
-        if (checked) {
+        if (checked)
+        {
             setSrcColor(color)
             isChecked = true
 
-            if (anim) {
+            if (anim)
+            {
                 showAnim()
             }
-        } else {
+        }
+        else
+        {
             setSrcColor(btnColor)
             isChecked = false
 
-            if (anim) {
+            if (anim)
+            {
                 setCancel()
             }
         }
 
-        if (callBack) {
+        if (callBack)
+        {
             onListenerUpdate(checked)
         }
     }
 
-    fun setChecked(checked: Boolean) {
+    fun setChecked(checked: Boolean)
+    {
         setChecked(checked, false, false)
     }
 
-    private fun onListenerUpdate(checked: Boolean) {
-        if (listener != null) {
+    private fun onListenerUpdate(checked: Boolean)
+    {
+        if (listener != null)
+        {
             listener!!.onCheckedChanged(this, checked)
         }
     }
 
-    fun setCancel() {
+    fun setCancel()
+    {
         setSrcColor(btnColor)
 
-        if (shakeAnimator != null) {
+        if (shakeAnimator != null)
+        {
             shakeAnimator!!.end()
             shakeAnimator!!.cancel()
         }
     }
 
-    fun setAllowRandomColor(allowRandomColor: Boolean) {
+    fun setAllowRandomColor(allowRandomColor: Boolean)
+    {
         shineParams.allowRandomColor = allowRandomColor
     }
 
-    fun setAnimDuration(durationMs: Int) {
+    fun setAnimDuration(durationMs: Int)
+    {
         shineParams.animDuration = durationMs.toLong()
     }
 
-    fun setBigShineColor(color: Int) {
+    fun setBigShineColor(color: Int)
+    {
         shineParams.bigShineColor = color
     }
 
-    fun setClickAnimDuration(durationMs: Int) {
+    fun setClickAnimDuration(durationMs: Int)
+    {
         shineParams.clickAnimDuration = durationMs.toLong()
     }
 
-    fun enableFlashing(enable: Boolean) {
+    fun enableFlashing(enable: Boolean)
+    {
         shineParams.enableFlashing = enable
     }
 
-    fun setShineCount(count: Int) {
+    fun setShineCount(count: Int)
+    {
         shineParams.shineCount = count
     }
 
-    fun setShineDistanceMultiple(multiple: Float) {
+    fun setShineDistanceMultiple(multiple: Float)
+    {
         shineParams.shineDistanceMultiple = multiple
     }
 
-    fun setShineTurnAngle(angle: Float) {
+    fun setShineTurnAngle(angle: Float)
+    {
         shineParams.shineTurnAngle = angle
     }
 
-    fun setSmallShineColor(color: Int) {
+    fun setSmallShineColor(color: Int)
+    {
         shineParams.smallShineColor = color
     }
 
-    fun setSmallShineOffAngle(angle: Float) {
+    fun setSmallShineOffAngle(angle: Float)
+    {
         shineParams.smallShineOffsetAngle = angle
     }
 
-    fun setShineSize(size: Int) {
+    fun setShineSize(size: Int)
+    {
         shineParams.shineSize = size
     }
 
-    override fun setOnClickListener(l: View.OnClickListener?) {
-        if (l is OnButtonClickListener) {
+    override fun setOnClickListener(l: View.OnClickListener?)
+    {
+        if (l is OnButtonClickListener)
+        {
             super.setOnClickListener(l)
-        } else {
-            if (onButtonClickListener != null) {
+        }
+        else
+        {
+            if (onButtonClickListener != null)
+            {
                 onButtonClickListener!!.setListener(l)
             }
         }
     }
 
-    fun setOnCheckStateChangeListener(listener: OnCheckedChangeListener) {
+    fun setOnCheckStateChangeListener(listener: OnCheckedChangeListener)
+    {
         this.listener = listener
     }
 
-    fun init(activity: Activity) {
+    fun init(activity: Activity)
+    {
         this.activity = activity
         onButtonClickListener = OnButtonClickListener()
         setOnClickListener(onButtonClickListener)
     }
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onDraw(canvas: Canvas)
+    {
         super.onDraw(canvas)
         calPixels()
     }
 
-    override fun onAttachedToWindow() {
+    override fun onAttachedToWindow()
+    {
         super.onAttachedToWindow()
     }
 
-    fun showAnim() {
-        if (activity != null) {
+    fun showAnim()
+    {
+        if (activity != null)
+        {
             val rootView = activity!!.findViewById<View>(Window.ID_ANDROID_CONTENT) as ViewGroup
             shineView = ShineView(activity!!, this, shineParams)
             rootView.addView(shineView, ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT))
             doShareAnim()
-        } else {
+        }
+        else
+        {
             Log.e(TAG, "Please init.")
         }
     }
 
-    fun removeView(view: View) {
-        if (activity != null) {
+    fun removeView(view: View)
+    {
+        if (activity != null)
+        {
             val rootView = activity!!.findViewById<View>(Window.ID_ANDROID_CONTENT) as ViewGroup
             rootView.removeView(view)
-        } else {
+        }
+        else
+        {
             Log.e(TAG, "Please init.")
         }
     }
 
-    fun setShapeResource(raw: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+    fun setShapeResource(raw: Int)
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+        {
             setShape(resources.getDrawable(raw, null))
-        } else {
+        }
+        else
+        {
             setShape(resources.getDrawable(raw))
         }
     }
 
-    private fun doShareAnim() {
+    private fun doShareAnim()
+    {
         shakeAnimator = ValueAnimator.ofFloat(0.4f, 1f, 0.9f, 1f)
         shakeAnimator!!.interpolator = LinearInterpolator()
         shakeAnimator!!.duration = 500
@@ -262,20 +313,25 @@ class ShineButton : PorterShapeImageView {
             scaleY = valueAnimator.animatedValue as Float
         }
 
-        shakeAnimator!!.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animator: Animator) {
+        shakeAnimator!!.addListener(object : Animator.AnimatorListener
+        {
+            override fun onAnimationStart(animator: Animator)
+            {
                 setSrcColor(color)
             }
 
-            override fun onAnimationEnd(animator: Animator) {
+            override fun onAnimationEnd(animator: Animator)
+            {
                 setSrcColor(if (isChecked) color else btnColor)
             }
 
-            override fun onAnimationCancel(animator: Animator) {
+            override fun onAnimationCancel(animator: Animator)
+            {
                 setSrcColor(btnColor)
             }
 
-            override fun onAnimationRepeat(animator: Animator) {
+            override fun onAnimationRepeat(animator: Animator)
+            {
 
             }
         })
@@ -283,12 +339,15 @@ class ShineButton : PorterShapeImageView {
         shakeAnimator!!.start()
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int)
+    {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
-    private fun calPixels() {
-        if (activity != null && metrics != null) {
+    private fun calPixels()
+    {
+        if (activity != null && metrics != null)
+        {
             activity!!.windowManager.defaultDisplay.getMetrics(metrics)
             val location = IntArray(2)
             getLocationInWindow(location)
@@ -300,43 +359,51 @@ class ShineButton : PorterShapeImageView {
         }
     }
 
-    interface OnCheckedChangeListener {
+    interface OnCheckedChangeListener
+    {
         fun onCheckedChanged(view: View, checked: Boolean)
     }
 
-    inner class OnButtonClickListener : View.OnClickListener {
+    inner class OnButtonClickListener : View.OnClickListener
+    {
         internal var listener: View.OnClickListener? = null
 
-        constructor() {
+        constructor()
 
-        }
-
-        constructor(l: View.OnClickListener) {
+        constructor(l: View.OnClickListener)
+        {
             listener = l
         }
 
-        fun setListener(listener: View.OnClickListener?) {
+        fun setListener(listener: View.OnClickListener?)
+        {
             this.listener = listener
         }
 
-        override fun onClick(view: View) {
-            if (!isChecked) {
+        override fun onClick(view: View)
+        {
+            if (!isChecked)
+            {
                 isChecked = true
                 showAnim()
-            } else {
+            }
+            else
+            {
                 isChecked = false
                 setCancel()
             }
 
             onListenerUpdate(isChecked)
 
-            if (listener != null) {
+            if (listener != null)
+            {
                 listener!!.onClick(view)
             }
         }
     }
 
-    companion object {
+    companion object
+    {
         private val TAG = "ShineButton"
     }
 }

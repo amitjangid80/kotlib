@@ -8,11 +8,12 @@ import android.view.animation.ScaleAnimation
 
 /**
  * Created by Amit Jangid on 22,May,2018
- */
-object AnimLoader {
-    fun getInAnimation(context: Context): AnimationSet {
+**/
+object AnimLoader
+{
+    fun getInAnimation(context: Context): AnimationSet
+    {
         val `in` = AnimationSet(context, null)
-
         val alpha = AlphaAnimation(0.0f, 1.0f)
         alpha.duration = 90
 
@@ -47,7 +48,8 @@ object AnimLoader {
         return `in`
     }
 
-    fun getOutAnimation(context: Context): AnimationSet {
+    fun getOutAnimation(context: Context): AnimationSet
+    {
         val out = AnimationSet(context, null)
         val alpha = AlphaAnimation(1.0f, 0.0f)
         alpha.duration = 150

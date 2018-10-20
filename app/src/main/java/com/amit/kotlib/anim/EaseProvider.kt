@@ -5,8 +5,10 @@ package com.amit.kotlib.anim
  *
  * The Easing class provides a collection of ease functions. It does not use the standard 4 param
  * ease signature. Instead it uses a single param which indicates the current linear ratio (0 to 1) of the tween.
- */
-internal object EaseProvider {
+**/
+@Suppress("NAME_SHADOWING")
+internal object EaseProvider
+{
     /**
      * get method
      *
@@ -14,10 +16,13 @@ internal object EaseProvider {
      * @param elapsedTimeRate   Elapsed time / Total time
      *
      * @return easedValue
-     */
-    operator fun get(ease: Ease, elapsedTimeRate: Float): Float {
+    **/
+    operator fun get(ease: Ease, elapsedTimeRate: Float): Float
+    {
         var elapsedTimeRate = elapsedTimeRate
-        when (ease) {
+
+        when (ease)
+        {
             Ease.LINEAR -> return elapsedTimeRate
 
             Ease.QUAD_IN -> return getPowIn(elapsedTimeRate, 2.0)
@@ -60,24 +65,27 @@ internal object EaseProvider {
 
             Ease.CIRC_OUT -> return Math.sqrt((1f - --elapsedTimeRate * elapsedTimeRate).toDouble()).toFloat()
 
-            Ease.CIRC_IN_OUT -> {
+            Ease.CIRC_IN_OUT ->
+            {
                 // {line = bufferedReader.readLine(); line}()
-                return if ({elapsedTimeRate *= 2f; elapsedTimeRate}() < 1f) {
+                return if ({ elapsedTimeRate *= 2f; elapsedTimeRate }() < 1f)
+                {
                     (-0.5f * (Math.sqrt((1f - elapsedTimeRate * elapsedTimeRate).toDouble()) - 1f)).toFloat()
-                } else (0.5f * (Math.sqrt((1f - {elapsedTimeRate -= 2f; elapsedTimeRate}() * elapsedTimeRate).toDouble()) + 1f)).toFloat()
-
+                }
+                else (0.5f * (Math.sqrt((1f - { elapsedTimeRate -= 2f; elapsedTimeRate }() * elapsedTimeRate).toDouble()) + 1f)).toFloat()
             }
 
             Ease.BOUNCE_IN -> return getBounceIn(elapsedTimeRate)
 
             Ease.BOUNCE_OUT -> return getBounceOut(elapsedTimeRate)
 
-            Ease.BOUNCE_IN_OUT -> {
-
-                return if (elapsedTimeRate < 0.5f) {
+            Ease.BOUNCE_IN_OUT ->
+            {
+                return if (elapsedTimeRate < 0.5f)
+                {
                     getBounceIn(elapsedTimeRate * 2f) * 0.5f
-                } else getBounceOut(elapsedTimeRate * 2f - 1f) * 0.5f + 0.5f
-
+                }
+                else getBounceOut(elapsedTimeRate * 2f - 1f) * 0.5f + 0.5f
             }
 
             Ease.ELASTIC_IN -> return getElasticIn(elapsedTimeRate, 1.0, 0.3)
@@ -96,8 +104,9 @@ internal object EaseProvider {
      * @param elapsedTimeRate Elapsed time / Total time
      * @param pow             pow The exponent to use (ex. 3 would return a cubic ease).
      * @return easedValue
-     */
-    private fun getPowIn(elapsedTimeRate: Float, pow: Double): Float {
+    **/
+    private fun getPowIn(elapsedTimeRate: Float, pow: Double): Float
+    {
         return Math.pow(elapsedTimeRate.toDouble(), pow).toFloat()
     }
 
@@ -107,8 +116,9 @@ internal object EaseProvider {
      * @param elapsedTimeRate Elapsed time / Total time
      * @param pow             pow The exponent to use (ex. 3 would return a cubic ease).
      * @return easedValue
-     */
-    private fun getPowOut(elapsedTimeRate: Float, pow: Double): Float {
+    **/
+    private fun getPowOut(elapsedTimeRate: Float, pow: Double): Float
+    {
         return (1.toFloat() - Math.pow((1 - elapsedTimeRate).toDouble(), pow)).toFloat()
     }
 
@@ -118,13 +128,16 @@ internal object EaseProvider {
      * @param elapsedTimeRate Elapsed time / Total time
      * @param pow             pow The exponent to use (ex. 3 would return a cubic ease).
      * @return easedValue
-     */
-    private fun getPowInOut(elapsedTimeRate: Float, pow: Double): Float {
+    **/
+    private fun getPowInOut(elapsedTimeRate: Float, pow: Double): Float
+    {
         var elapsedTimeRate = elapsedTimeRate
-        return if ({elapsedTimeRate *= 2f; elapsedTimeRate}() < 1) {
-            (0.5 * Math.pow(elapsedTimeRate.toDouble(), pow)).toFloat()
-        } else (1 - 0.5 * Math.abs(Math.pow((2 - elapsedTimeRate).toDouble(), pow))).toFloat()
 
+        return if ({ elapsedTimeRate *= 2f; elapsedTimeRate }() < 1)
+        {
+            (0.5 * Math.pow(elapsedTimeRate.toDouble(), pow)).toFloat()
+        }
+        else (1 - 0.5 * Math.abs(Math.pow((2 - elapsedTimeRate).toDouble(), pow))).toFloat()
     }
 
     /**
@@ -133,16 +146,18 @@ internal object EaseProvider {
      * @param elapsedTimeRate Elapsed time / Total time
      * @param amount          amount The strength of the ease.
      * @return easedValue
-     */
-    private fun getBackInOut(elapsedTimeRate: Float, amount: Float): Float {
+    **/
+    private fun getBackInOut(elapsedTimeRate: Float, amount: Float): Float
+    {
         var elapsedTimeRate = elapsedTimeRate
         var amount = amount
         amount *= 1.525f
 
-        return if ({elapsedTimeRate *= 2f; elapsedTimeRate}() < 1) {
+        return if ({ elapsedTimeRate *= 2f; elapsedTimeRate }() < 1)
+        {
             (0.5 * (elapsedTimeRate * elapsedTimeRate * ((amount + 1) * elapsedTimeRate - amount))).toFloat()
-        } else (0.5 * ({elapsedTimeRate -= 2f; elapsedTimeRate}() * elapsedTimeRate * ((amount + 1) * elapsedTimeRate + amount) + 2)).toFloat()
-
+        }
+        else (0.5 * ({ elapsedTimeRate -= 2f; elapsedTimeRate }() * elapsedTimeRate * ((amount + 1) * elapsedTimeRate + amount) + 2)).toFloat()
     }
 
     /**
@@ -163,14 +178,13 @@ internal object EaseProvider {
      */
     private fun getBounceOut(elapsedTimeRate: Float): Float {
         var elapsedTimeRate = elapsedTimeRate
-        return if (elapsedTimeRate < 1 / 2.75) {
-            (7.5625 * elapsedTimeRate.toDouble() * elapsedTimeRate.toDouble()).toFloat()
-        } else if (elapsedTimeRate < 2 / 2.75) {
-            (7.5625 * {elapsedTimeRate -= (1.5 / 2.75).toFloat(); elapsedTimeRate}().toDouble() * elapsedTimeRate.toDouble() + 0.75).toFloat()
-        } else if (elapsedTimeRate < 2.5 / 2.75) {
-            (7.5625 * {elapsedTimeRate -= (2.25 / 2.75).toFloat(); elapsedTimeRate}().toDouble() * elapsedTimeRate.toDouble() + 0.9375).toFloat()
-        } else {
-            (7.5625 * {elapsedTimeRate -= (2.625 / 2.75).toFloat(); elapsedTimeRate}().toDouble() * elapsedTimeRate.toDouble() + 0.984375).toFloat()
+
+        return when
+        {
+            elapsedTimeRate < 1 / 2.75 -> (7.5625 * elapsedTimeRate.toDouble() * elapsedTimeRate.toDouble()).toFloat()
+            elapsedTimeRate < 2 / 2.75 -> (7.5625 * { elapsedTimeRate -= (1.5 / 2.75).toFloat(); elapsedTimeRate }().toDouble() * elapsedTimeRate.toDouble() + 0.75).toFloat()
+            elapsedTimeRate < 2.5 / 2.75 -> (7.5625 * { elapsedTimeRate -= (2.25 / 2.75).toFloat(); elapsedTimeRate }().toDouble() * elapsedTimeRate.toDouble() + 0.9375).toFloat()
+            else -> (7.5625 * { elapsedTimeRate -= (2.625 / 2.75).toFloat(); elapsedTimeRate }().toDouble() * elapsedTimeRate.toDouble() + 0.984375).toFloat()
         }
     }
 
@@ -181,16 +195,19 @@ internal object EaseProvider {
      * @param amplitude       Amplitude of easing
      * @param period          Animation of period
      * @return easedValue
-     */
-    private fun getElasticIn(elapsedTimeRate: Float, amplitude: Double, period: Double): Float {
+    **/
+    private fun getElasticIn(elapsedTimeRate: Float, amplitude: Double, period: Double): Float
+    {
         var elapsedTimeRate = elapsedTimeRate
-        if (elapsedTimeRate == 0f || elapsedTimeRate == 1f) {
+
+        if (elapsedTimeRate == 0f || elapsedTimeRate == 1f)
+        {
             return elapsedTimeRate
         }
 
         val pi2 = Math.PI * 2
         val s = period / pi2 * Math.asin(1 / amplitude)
-        return (-(amplitude * Math.pow(2.0, (10f * {elapsedTimeRate -= 1f; elapsedTimeRate}()).toDouble()) * Math.sin((elapsedTimeRate - s) * pi2 / period))).toFloat()
+        return (-(amplitude * Math.pow(2.0, (10f * { elapsedTimeRate -= 1f; elapsedTimeRate }()).toDouble()) * Math.sin((elapsedTimeRate - s) * pi2 / period))).toFloat()
     }
 
     /**
@@ -200,9 +217,11 @@ internal object EaseProvider {
      * @param amplitude       Amplitude of easing
      * @param period          Animation of period
      * @return easedValue
-     */
-    private fun getElasticOut(elapsedTimeRate: Float, amplitude: Double, period: Double): Float {
-        if (elapsedTimeRate == 0f || elapsedTimeRate == 1f) {
+    **/
+    private fun getElasticOut(elapsedTimeRate: Float, amplitude: Double, period: Double): Float
+    {
+        if (elapsedTimeRate == 0f || elapsedTimeRate == 1f)
+        {
             return elapsedTimeRate
         }
 
@@ -218,15 +237,17 @@ internal object EaseProvider {
      * @param amplitude       Amplitude of easing
      * @param period          Animation of period
      * @return easedValue
-     */
-    private fun getElasticInOut(elapsedTimeRate: Float, amplitude: Double, period: Double): Float {
+    **/
+    private fun getElasticInOut(elapsedTimeRate: Float, amplitude: Double, period: Double): Float
+    {
         var elapsedTimeRate = elapsedTimeRate
         val pi2 = Math.PI * 2
         val s = period / pi2 * Math.asin(1 / amplitude)
 
-        return if ({elapsedTimeRate *= 2f; elapsedTimeRate}() < 1) {
-            (-0.5f * (amplitude * Math.pow(2.0, (10 * {elapsedTimeRate -= 1f; elapsedTimeRate}().toDouble()) * Math.sin((elapsedTimeRate - s) * pi2 / period))).toFloat())
-        } else (amplitude * Math.pow(2.0, (-10 * {elapsedTimeRate -= 1f; elapsedTimeRate}()).toDouble()) * Math.sin((elapsedTimeRate - s) * pi2 / period) * 0.5 + 1).toFloat()
-
+        return if ({ elapsedTimeRate *= 2f; elapsedTimeRate }() < 1)
+        {
+            (-0.5f * (amplitude * Math.pow(2.0, (10 * { elapsedTimeRate -= 1f; elapsedTimeRate }().toDouble()) * Math.sin((elapsedTimeRate - s) * pi2 / period))).toFloat())
+        }
+        else (amplitude * Math.pow(2.0, (-10 * { elapsedTimeRate -= 1f; elapsedTimeRate }()).toDouble()) * Math.sin((elapsedTimeRate - s) * pi2 / period) * 0.5 + 1).toFloat()
     }
 }

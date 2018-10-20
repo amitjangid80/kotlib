@@ -29,6 +29,7 @@ import com.amit.kotlib.interfaces.CustomizeByCode
 import com.amit.kotlib.interfaces.OnAnimEndListener
 import com.amit.kotlib.utilities.Utils
 
+@Suppress("NAME_SHADOWING")
 abstract class ProgressButton : AppCompatButton, AnimBtn, CustomizeByCode {
     private var mGradientDrawable: GradientDrawable? = null
     private var mIsMorphingInProgress: Boolean = false
@@ -246,7 +247,7 @@ abstract class ProgressButton : AppCompatButton, AnimBtn, CustomizeByCode {
      * @param progress set a progress to switch displaying a determinate circular progress
      */
     override fun setProgress(progress: Int) {
-        var progress = progress
+        var progress: Int = progress
         progress = Math.max(CircularAnimDrawable.MIN_PROGRESS,
                 Math.min(CircularAnimDrawable.MAX_PROGRESS, progress))
 

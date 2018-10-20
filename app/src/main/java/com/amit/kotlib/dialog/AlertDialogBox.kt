@@ -12,17 +12,15 @@ import android.view.Window
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-
 import com.amit.kotlib.R
-
-import com.amit.kotlib.dialog.Anim.POP
-import com.amit.kotlib.dialog.Anim.SIDE
-import com.amit.kotlib.dialog.Anim.SLIDE
+import com.amit.kotlib.dialog.Anim.*
 
 /**
  * Created by Amit Jangid on 21,May,2018
- */
-class AlertDialogBox private constructor(builder: Builder) {
+**/
+@Suppress("unused")
+class AlertDialogBox private constructor(builder: Builder)
+{
     private val Anim: Anim?
     private val cancel: Boolean
     private val visibility: Icon?
@@ -40,16 +38,21 @@ class AlertDialogBox private constructor(builder: Builder) {
 
     @ColorInt
     private val pBtnColor: Int
+
     @ColorInt
     private val nBtnColor: Int
+
     @ColorInt
     private val bgColor: Int
+
     @ColorInt
     private val pBtnTextColor: Int
+
     @ColorInt
     private val nBtnTextColor: Int
 
-    init {
+    init
+    {
         this.icon = builder.icon
         this.Anim = builder.Anim
         this.title = builder.title
@@ -73,7 +76,8 @@ class AlertDialogBox private constructor(builder: Builder) {
         this.negativeBtnText = builder.negativeBtnText
     }
 
-    class Builder(val activity: Activity) {
+    class Builder(val activity: Activity)
+    {
         var Anim: Anim? = null
         var visibility: Icon? = null
 
@@ -87,92 +91,112 @@ class AlertDialogBox private constructor(builder: Builder) {
 
         @DrawableRes
         var icon: Int = 0
+
         @ColorInt
         var pBtnColor: Int = 0
+
         @ColorInt
         var pBtnTextColor: Int = 0
+
         @ColorInt
         var nBtnColor: Int = 0
+
         @ColorInt
         var nBtnTextColor: Int = 0
+
         @ColorInt
         var bgColor: Int = 0
 
-        fun setTitle(title: String): Builder {
+        fun setTitle(title: String): Builder
+        {
             this.title = title
             return this
         }
 
-        fun setBackgroundColor(bgColor: Int): Builder {
+        fun setBackgroundColor(bgColor: Int): Builder
+        {
             this.bgColor = bgColor
             return this
         }
 
-        fun setMessage(message: String): Builder {
+        fun setMessage(message: String): Builder
+        {
             this.message = message
             return this
         }
 
-        fun setPositiveBtnText(positiveBtnText: String): Builder {
+        fun setPositiveBtnText(positiveBtnText: String): Builder
+        {
             this.positiveBtnText = positiveBtnText
             return this
         }
 
-        fun setPositiveBtnTextColor(pBtnTextColor: Int): Builder {
+        fun setPositiveBtnTextColor(pBtnTextColor: Int): Builder
+        {
             this.pBtnTextColor = pBtnTextColor
             return this
         }
 
-        fun setPositiveBtnBackground(pBtnColor: Int): Builder {
+        fun setPositiveBtnBackground(pBtnColor: Int): Builder
+        {
             this.pBtnColor = pBtnColor
             return this
         }
 
-        fun setNegativeBtnText(negativeBtnText: String): Builder {
+        fun setNegativeBtnText(negativeBtnText: String): Builder
+        {
             this.negativeBtnText = negativeBtnText
             return this
         }
 
-        fun setNegativeBtnTextColor(nBtnTextColor: Int): Builder {
+        fun setNegativeBtnTextColor(nBtnTextColor: Int): Builder
+        {
             this.nBtnTextColor = nBtnTextColor
             return this
         }
 
-        fun setNegativeBtnBackground(nBtnColor: Int): Builder {
+        fun setNegativeBtnBackground(nBtnColor: Int): Builder
+        {
             this.nBtnColor = nBtnColor
             return this
         }
 
         //setIcon
-        fun setIcon(icon: Int, visibility: Icon): Builder {
+        fun setIcon(icon: Int, visibility: Icon): Builder
+        {
             this.icon = icon
             this.visibility = visibility
             return this
         }
 
-        fun setAnim(Anim: Anim): Builder {
+        fun setAnim(Anim: Anim): Builder
+        {
             this.Anim = Anim
             return this
         }
 
         //set Positive listener
-        fun onPositiveClicked(pListener: AlertDialogListener): Builder {
+        fun onPositiveClicked(pListener: AlertDialogListener): Builder
+        {
             this.pListener = pListener
             return this
         }
 
         //set Negative listener
-        fun onNegativeClicked(nListener: AlertDialogListener): Builder {
+        fun onNegativeClicked(nListener: AlertDialogListener): Builder
+        {
             this.nListener = nListener
             return this
         }
 
-        fun isCancellable(cancel: Boolean): Builder {
+        fun isCancellable(cancel: Boolean): Builder
+        {
             this.cancel = cancel
             return this
         }
 
-        fun build(): AlertDialogBox {
+        fun build(): AlertDialogBox
+        {
             val message1: TextView
             val title1: TextView
             val iconImg: ImageView
@@ -180,16 +204,12 @@ class AlertDialogBox private constructor(builder: Builder) {
             val pBtn: Button
             val view: View
 
-            val dialog: Dialog
-
-            if (Anim == POP) {
-                dialog = Dialog(activity, R.style.PopTheme)
-            } else if (Anim == SIDE) {
-                dialog = Dialog(activity, R.style.SideTheme)
-            } else if (Anim == SLIDE) {
-                dialog = Dialog(activity, R.style.SlideTheme)
-            } else {
-                dialog = Dialog(activity)
+            val dialog: Dialog = when (Anim)
+            {
+                POP -> Dialog(activity, R.style.PopTheme)
+                SIDE -> Dialog(activity, R.style.SideTheme)
+                SLIDE -> Dialog(activity, R.style.SlideTheme)
+                else -> Dialog(activity)
             }
 
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -207,54 +227,68 @@ class AlertDialogBox private constructor(builder: Builder) {
             title1.text = title
             message1.text = message
 
-            if (positiveBtnText != null) {
+            if (positiveBtnText != null)
+            {
                 pBtn.text = positiveBtnText
             }
 
-            if (pBtnColor != 0) {
+            if (pBtnColor != 0)
+            {
                 val bgShape = pBtn.background as GradientDrawable
                 bgShape.setColor(pBtnColor)
             }
 
-            if (pBtnTextColor != 0) {
+            if (pBtnTextColor != 0)
+            {
                 pBtn.setTextColor(pBtnTextColor)
             }
 
-            if (nBtnColor != 0) {
+            if (nBtnColor != 0)
+            {
                 val bgShape = nBtn.background as GradientDrawable
                 bgShape.setColor(nBtnColor)
             }
 
-            if (nBtnTextColor != 0) {
+            if (nBtnTextColor != 0)
+            {
                 nBtn.setTextColor(nBtnTextColor)
             }
 
-            if (negativeBtnText != null) {
+            if (negativeBtnText != null)
+            {
                 nBtn.text = negativeBtnText
             }
 
             iconImg.setImageResource(icon)
 
-            if (visibility === Icon.Visible) {
+            if (visibility === Icon.Visible)
+            {
                 iconImg.visibility = View.VISIBLE
-            } else {
+            }
+            else
+            {
                 iconImg.visibility = View.GONE
             }
 
-            if (bgColor != 0) {
+            if (bgColor != 0)
+            {
                 view.setBackgroundColor(bgColor)
             }
 
-            if (pListener != null) {
+            if (pListener != null)
+            {
                 pBtn.setOnClickListener {
                     pListener!!.onClick()
                     dialog.dismiss()
                 }
-            } else {
+            }
+            else
+            {
                 pBtn.setOnClickListener { dialog.dismiss() }
             }
 
-            if (nListener != null) {
+            if (nListener != null)
+            {
                 nBtn.visibility = View.VISIBLE
 
                 nBtn.setOnClickListener {

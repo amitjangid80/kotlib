@@ -3,13 +3,7 @@ package com.amit.kotlib.drawables
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.Paint
-import android.graphics.PixelFormat
-import android.graphics.Rect
+import android.graphics.*
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.view.View
@@ -21,16 +15,18 @@ import android.view.animation.DecelerateInterpolator
  *
  * An animation of the 'Done' status. It makes a circular reveal of a background color and the
  * than show the image passed in the constructor.
- */
+**/
 class CircularRevealAnimDrawable
 /**
- * @param view      The view that if being animated
+ * @param mAnimatedView      The view that if being animated
  * @param fillColor The color of the background that will the revealed
- * @param bitmap    The animage that will be shown in the end of the animation.
- */
-(private val mAnimatedView: View, fillColor: Int, private var mReadyImage: Bitmap?) : Drawable(), Animatable {
+ * @param mReadyImage    The animage that will be shown in the end of the animation.
+**/
+(private val mAnimatedView: View, fillColor: Int, private var mReadyImage: Bitmap?) : Drawable(), Animatable
+{
     var isFilled: Boolean = false
         private set
+
     private val mPaint: Paint
     private val mPaintImageReady: Paint
     private var mRadius: Float = 0.toFloat()
@@ -43,7 +39,8 @@ class CircularRevealAnimDrawable
     private var bitMapXOffset: Float = 0.toFloat()
     private var bitMapYOffset: Float = 0.toFloat()
 
-    init {
+    init
+    {
         isRunning = false
 
         mPaint = Paint()
@@ -63,8 +60,9 @@ class CircularRevealAnimDrawable
      * The method is called when bounds change
      *
      * @param bounds
-     */
-    override fun onBoundsChange(bounds: Rect) {
+    **/
+    override fun onBoundsChange(bounds: Rect)
+    {
         super.onBoundsChange(bounds)
 
         val bitMapWidth = ((bounds.right - bounds.left) * 0.6).toInt()
@@ -83,8 +81,9 @@ class CircularRevealAnimDrawable
     /**
      * Setup all the animations. There are a reveal animation to show the button background
      * and a alpha animation to show the bitmap.
-     */
-    private fun setupAnimations() {
+    **/
+    private fun setupAnimations()
+    {
         val alphaAnimator = ValueAnimator.ofInt(0, 255)
         alphaAnimator.duration = 80
 
@@ -104,8 +103,10 @@ class CircularRevealAnimDrawable
             mAnimatedView.invalidate()
         }
 
-        mRevealInAnimation!!.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationEnd(animation: Animator) {
+        mRevealInAnimation!!.addListener(object : AnimatorListenerAdapter()
+        {
+            override fun onAnimationEnd(animation: Animator)
+            {
                 super.onAnimationEnd(animation)
                 isFilled = true
                 alphaAnimator.start()
@@ -115,9 +116,11 @@ class CircularRevealAnimDrawable
 
     /**
      * Starts the animation
-     */
-    override fun start() {
-        if (isRunning()) {
+    **/
+    override fun start()
+    {
+        if (isRunning())
+        {
             return
         }
 
@@ -128,9 +131,11 @@ class CircularRevealAnimDrawable
 
     /**
      * Stops the animation
-     */
-    override fun stop() {
-        if (!isRunning()) {
+    **/
+    override fun stop()
+    {
+        if (!isRunning())
+        {
             return
         }
 
@@ -140,34 +145,42 @@ class CircularRevealAnimDrawable
 
     /**
      * @return Return if its running or not.
-     */
-    override fun isRunning(): Boolean {
+    **/
+    override fun isRunning(): Boolean
+    {
         return isRunning
     }
 
-    override fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas)
+    {
         canvas.drawCircle(mCenterWidth, mCenterHeight, mRadius, mPaint)
 
-        if (isFilled) {
+        if (isFilled)
+        {
             mPaintImageReady.alpha = mImageReadyAlpha
             canvas.drawBitmap(mReadyImage!!, bitMapXOffset, bitMapYOffset, mPaintImageReady)
         }
     }
 
-    override fun setAlpha(alpha: Int) {
+    override fun setAlpha(alpha: Int)
+    {
 
     }
 
-    override fun setColorFilter(colorFilter: ColorFilter?) {
+    override fun setColorFilter(colorFilter: ColorFilter?)
+    {
 
     }
 
-    override fun getOpacity(): Int {
+    override fun getOpacity(): Int
+    {
         return PixelFormat.OPAQUE
     }
 
-    fun dispose() {
-        if (mRevealInAnimation != null) {
+    fun dispose()
+    {
+        if (mRevealInAnimation != null)
+        {
             mRevealInAnimation!!.end()
             mRevealInAnimation!!.removeAllUpdateListeners()
             mRevealInAnimation!!.cancel()

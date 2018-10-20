@@ -10,25 +10,31 @@ import android.util.AttributeSet
 
 import com.amit.kotlib.R
 
-open class PorterShapeImageView : PorterImageView {
+open class PorterShapeImageView : PorterImageView
+{
     private var shape: Drawable? = null
     private var matrix1: Matrix? = null
     private var drawMatrix: Matrix? = null
 
-    constructor(context: Context) : super(context) {
+    constructor(context: Context) : super(context)
+    {
         setup(context, null, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    {
         setup(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
+    {
         setup(context, attrs, defStyle)
     }
 
-    private fun setup(context: Context, attrs: AttributeSet?, defStyle: Int) {
-        if (attrs != null) {
+    private fun setup(context: Context, attrs: AttributeSet?, defStyle: Int)
+    {
+        if (attrs != null)
+        {
             val typedArray = context.obtainStyledAttributes(attrs, R.styleable.PorterShapeImageView, defStyle, 0)
             shape = typedArray.getDrawable(R.styleable.PorterShapeImageView_siShape)
             typedArray.recycle()
@@ -37,17 +43,22 @@ open class PorterShapeImageView : PorterImageView {
         matrix1 = Matrix()
     }
 
-    fun setShape(drawable: Drawable) {
+    fun setShape(drawable: Drawable)
+    {
         shape = drawable
         invalidate()
     }
 
-    override fun paintMaskCanvas(maskCanvas: Canvas, maskPaint: Paint, width: Int, height: Int) {
-        if (shape != null) {
-            if (shape is BitmapDrawable) {
+    override fun paintMaskCanvas(maskCanvas: Canvas, maskPaint: Paint, width: Int, height: Int)
+    {
+        if (shape != null)
+        {
+            if (shape is BitmapDrawable)
+            {
                 configureBitmapBounds(getWidth(), getHeight())
 
-                if (drawMatrix != null) {
+                if (drawMatrix != null)
+                {
                     val drawableSaveCount = maskCanvas.saveCount
                     maskCanvas.save()
                     maskCanvas.concat(matrix1)
@@ -62,13 +73,15 @@ open class PorterShapeImageView : PorterImageView {
         }
     }
 
-    private fun configureBitmapBounds(viewWidth: Int, viewHeight: Int) {
+    private fun configureBitmapBounds(viewWidth: Int, viewHeight: Int)
+    {
         drawMatrix = null
         val drawableWidth = shape!!.intrinsicWidth
         val drawableHeight = shape!!.intrinsicHeight
         val fits = viewWidth == drawableWidth && viewHeight == drawableHeight
 
-        if (drawableWidth > 0 && drawableHeight > 0 && !fits) {
+        if (drawableWidth > 0 && drawableHeight > 0 && !fits)
+        {
             shape!!.setBounds(0, 0, drawableWidth, drawableHeight)
             val widthRatio = viewWidth.toFloat() / drawableWidth.toFloat()
             val heightRatio = viewHeight.toFloat() / drawableHeight.toFloat()

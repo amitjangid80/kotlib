@@ -4,22 +4,16 @@ import android.animation.Animator
 import android.animation.ValueAnimator
 import android.app.Activity
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.RectF
+import android.graphics.*
 import android.util.AttributeSet
 import android.view.View
 import android.view.WindowManager
-
 import com.amit.kotlib.anim.Ease
 import com.amit.kotlib.anim.EaseInterpolator
+import java.util.*
 
-import java.util.Random
-
-class ShineView : View {
-
+class ShineView : View
+{
     internal var shineAnimator: ShineAnimator? = null
     internal lateinit var clickAnimator: ValueAnimator
 
@@ -230,8 +224,8 @@ class ShineView : View {
             paint2!!.strokeWidth = 0f
         }
 
-        canvas.drawPoint(centerAnimX.toFloat(), centerAnimY.toFloat(), paint)
-        canvas.drawPoint(centerAnimX.toFloat(), centerAnimY.toFloat(), paint2)
+        canvas.drawPoint(centerAnimX.toFloat(), centerAnimY.toFloat(), paint!!)
+        canvas.drawPoint(centerAnimX.toFloat(), centerAnimY.toFloat(), paint2!!)
 
         if (shineAnimator != null && !isRun) {
             isRun = true

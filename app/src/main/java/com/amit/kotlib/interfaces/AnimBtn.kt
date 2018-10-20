@@ -1,6 +1,8 @@
 package com.amit.kotlib.interfaces
 
-interface AnimBtn {
+@Suppress("unused")
+interface AnimBtn
+{
     fun startAnimation()
     fun revertAnimation()
     fun revertAnimation(onAnimEndListener: OnAnimEndListener)

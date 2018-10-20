@@ -9,7 +9,7 @@ import android.preference.PreferenceManager
  * 2018 April 17 - Tuesday - 12:20 PM
  *
  * this class is useful for saving data in shared preferences
- */
+**/
 
 class SharedPreferenceData
 /**
@@ -49,7 +49,7 @@ class SharedPreferenceData
      * this will return the data in string format
      */
     fun getValue(key: String): String {
-        return mSharedPreference.getString(key, "0")
+        return mSharedPreference.getString(key, "0")!!
     }
 
     /**
@@ -75,7 +75,7 @@ class SharedPreferenceData
      * this will return the data in string format
      */
     fun getStrValue(key: String): String {
-        return mSharedPreference.getString(key, "0")
+        return mSharedPreference.getString(key, "0")!!
     }
 
     /**

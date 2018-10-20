@@ -6,30 +6,36 @@ import android.graphics.Canvas
 import com.amit.kotlib.anim.Ease
 import com.amit.kotlib.anim.EaseInterpolator
 
-class ShineAnimator : ValueAnimator {
-    private val MAX_VALUE = 1.5f
-    private val ANIM_DURATION: Long = 1500
+@Suppress("unused", "UNUSED_PARAMETER")
+class ShineAnimator : ValueAnimator
+{
+    private val maxValue = 1.5f
+    private val animDuration: Long = 1500
     private var canvas: Canvas? = null
 
-    internal constructor() {
-        setFloatValues(1f, MAX_VALUE)
-        duration = ANIM_DURATION
+    internal constructor()
+    {
+        setFloatValues(1f, maxValue)
+        duration = animDuration
         startDelay = 200
         interpolator = EaseInterpolator(Ease.QUART_OUT)
     }
 
-    internal constructor(duration: Long, max_value: Float, delay: Long) {
+    internal constructor(duration: Long, max_value: Float, delay: Long)
+    {
         setFloatValues(1f, max_value)
         setDuration(duration)
         startDelay = delay
         interpolator = EaseInterpolator(Ease.QUART_OUT)
     }
 
-    fun startAnim(shineView: ShineView, centerAnimX: Int, centerAnimY: Int) {
+    fun startAnim(shineView: ShineView, centerAnimX: Int, centerAnimY: Int)
+    {
         start()
     }
 
-    fun setCanvas(canvas: Canvas) {
+    fun setCanvas(canvas: Canvas)
+    {
         this.canvas = canvas
     }
 }

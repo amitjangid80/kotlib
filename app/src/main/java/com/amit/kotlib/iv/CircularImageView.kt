@@ -1,25 +1,20 @@
 package com.amit.kotlib.iv
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.res.TypedArray
-import android.graphics.Bitmap
-import android.graphics.BitmapShader
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Matrix
-import android.graphics.Paint
-import android.graphics.RectF
-import android.graphics.Shader
+import android.graphics.*
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import android.view.MotionEvent
-
 import com.amit.kotlib.R
 
-open class CircularImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : AppCompatImageView(context, attrs) {
+@Suppress("MemberVisibilityCanBePrivate")
+@SuppressLint("ClickableViewAccessibility")
+open class CircularImageView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : AppCompatImageView(context, attrs)
+{
     private var mBitmapShader: Shader? = null
     private val mSharedMatrix: Matrix
 
@@ -36,34 +31,44 @@ open class CircularImageView @JvmOverloads constructor(context: Context, attrs: 
     var isHighlightEnable: Boolean = false
 
     var highlightColor: Int
+
         get() = mPressedPaint.color
-        set(color) {
+
+        set(color)
+        {
             mPressedPaint.color = color
             invalidate()
         }
 
     var strokeColor: Int
+
         get() = mStrokePaint.color
-        set(color) {
+
+        set(color)
+        {
             mStrokePaint.color = color
             invalidate()
         }
 
     var strokeWidth: Float
+
         get() = mStrokePaint.strokeWidth
-        set(width) {
+
+        set(width)
+        {
             mStrokePaint.strokeWidth = width
             invalidate()
         }
 
-    init {
-
+    init
+    {
         var strokeWidth = 0f
         var highlightEnable = true
         var strokeColor = Color.TRANSPARENT
         var highlightColor = DEF_PRESS_HIGHLIGHT_COLOR
 
-        if (attrs != null) {
+        if (attrs != null)
+        {
             val a = context.obtainStyledAttributes(attrs, R.styleable.CircularImageView, 0, 0)
             strokeColor = a.getColor(R.styleable.CircularImageView_strokeColor, Color.TRANSPARENT)
             strokeWidth = a.getDimension(R.styleable.CircularImageView_imgStrokeWidth, 0f)
@@ -91,29 +96,33 @@ open class CircularImageView @JvmOverloads constructor(context: Context, attrs: 
         setupBitmap()
     }
 
-    override fun setImageResource(resId: Int) {
+    override fun setImageResource(resId: Int)
+    {
         super.setImageResource(resId)
         setupBitmap()
     }
 
-    override fun setImageDrawable(drawable: Drawable?) {
+    override fun setImageDrawable(drawable: Drawable?)
+    {
         super.setImageDrawable(drawable)
         setupBitmap()
     }
 
-    override fun setImageBitmap(bm: Bitmap) {
+    override fun setImageBitmap(bm: Bitmap)
+    {
         super.setImageBitmap(bm)
         setupBitmap()
     }
 
-    override fun setImageURI(uri: Uri?) {
+    override fun setImageURI(uri: Uri?)
+    {
         super.setImageURI(uri)
         setupBitmap()
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int)
+    {
         super.onSizeChanged(w, h, oldw, oldh)
-
         val halfStrokeWidth = mStrokePaint.strokeWidth / 2f
         updateCircleDrawBounds(mBitmapDrawBounds)
 
@@ -122,13 +131,16 @@ open class CircularImageView @JvmOverloads constructor(context: Context, attrs: 
         updateBitmapSize()
     }
 
-    override fun onTouchEvent(event: MotionEvent): Boolean {
+    override fun onTouchEvent(event: MotionEvent): Boolean
+    {
         var processed = false
 
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> {
-
-                if (!isInCircle(event.x, event.y)) {
+        when (event.action)
+        {
+            MotionEvent.ACTION_DOWN ->
+            {
+                if (!isInCircle(event.x, event.y))
+                {
                     return false
                 }
 
@@ -137,13 +149,14 @@ open class CircularImageView @JvmOverloads constructor(context: Context, attrs: 
                 invalidate()
             }
 
-            MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP -> {
-
+            MotionEvent.ACTION_CANCEL, MotionEvent.ACTION_UP ->
+            {
                 processed = true
                 mPressed = false
                 invalidate()
 
-                if (!isInCircle(event.x, event.y)) {
+                if (!isInCircle(event.x, event.y))
+                {
                     return false
                 }
             }
@@ -152,38 +165,48 @@ open class CircularImageView @JvmOverloads constructor(context: Context, attrs: 
         return super.onTouchEvent(event) || processed
     }
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onDraw(canvas: Canvas)
+    {
         drawBitmap(canvas)
         drawStroke(canvas)
         drawHighlight(canvas)
     }
 
-    protected fun drawHighlight(canvas: Canvas) {
-        if (isHighlightEnable && mPressed) {
+    protected fun drawHighlight(canvas: Canvas)
+    {
+        if (isHighlightEnable && mPressed)
+        {
             canvas.drawOval(mBitmapDrawBounds, mPressedPaint)
         }
     }
 
-    protected fun drawStroke(canvas: Canvas) {
-        if (mStrokePaint.strokeWidth > 0f) {
+    protected fun drawStroke(canvas: Canvas)
+    {
+        if (mStrokePaint.strokeWidth > 0f)
+        {
             canvas.drawOval(mStrokeBounds, mStrokePaint)
         }
     }
 
-    protected fun drawBitmap(canvas: Canvas) {
+    protected fun drawBitmap(canvas: Canvas)
+    {
         canvas.drawOval(mBitmapDrawBounds, mBitmapPaint)
     }
 
-    protected fun updateCircleDrawBounds(bounds: RectF) {
+    protected fun updateCircleDrawBounds(bounds: RectF)
+    {
         val contentWidth = (width - paddingLeft - paddingRight).toFloat()
         val contentHeight = (height - paddingTop - paddingBottom).toFloat()
 
         var left = paddingLeft.toFloat()
         var top = paddingTop.toFloat()
 
-        if (contentWidth > contentHeight) {
+        if (contentWidth > contentHeight)
+        {
             left += (contentWidth - contentHeight) / 2f
-        } else {
+        }
+        else
+        {
             top += (contentHeight - contentWidth) / 2f
         }
 
@@ -191,14 +214,17 @@ open class CircularImageView @JvmOverloads constructor(context: Context, attrs: 
         bounds.set(left, top, left + diameter, top + diameter)
     }
 
-    private fun setupBitmap() {
-        if (!mInitialized) {
+    private fun setupBitmap()
+    {
+        if (!mInitialized)
+        {
             return
         }
 
         mBitmap = getBitmapFromDrawable(drawable)
 
-        if (mBitmap == null) {
+        if (mBitmap == null)
+        {
             return
         }
 
@@ -207,8 +233,10 @@ open class CircularImageView @JvmOverloads constructor(context: Context, attrs: 
         updateBitmapSize()
     }
 
-    private fun updateBitmapSize() {
-        if (mBitmap == null) {
+    private fun updateBitmapSize()
+    {
+        if (mBitmap == null)
+        {
             return
         }
 
@@ -218,11 +246,14 @@ open class CircularImageView @JvmOverloads constructor(context: Context, attrs: 
 
         // scale up/down with respect to this view size and maintain aspect ratio
         // translate bitmap position with dx/dy to the center of the image
-        if (mBitmap!!.width < mBitmap!!.height) {
+        if (mBitmap!!.width < mBitmap!!.height)
+        {
             scale = mBitmapDrawBounds.width() / mBitmap!!.width.toFloat()
             dx = mBitmapDrawBounds.left
             dy = mBitmapDrawBounds.top - mBitmap!!.height * scale / 2f + mBitmapDrawBounds.width() / 2f
-        } else {
+        }
+        else
+        {
             scale = mBitmapDrawBounds.height() / mBitmap!!.height.toFloat()
             dx = mBitmapDrawBounds.left - mBitmap!!.width * scale / 2f + mBitmapDrawBounds.width() / 2f
             dy = mBitmapDrawBounds.top
@@ -233,12 +264,15 @@ open class CircularImageView @JvmOverloads constructor(context: Context, attrs: 
         mBitmapShader!!.setLocalMatrix(mSharedMatrix)
     }
 
-    private fun getBitmapFromDrawable(drawable: Drawable?): Bitmap? {
-        if (drawable == null) {
+    private fun getBitmapFromDrawable(drawable: Drawable?): Bitmap?
+    {
+        if (drawable == null)
+        {
             return null
         }
 
-        if (drawable is BitmapDrawable) {
+        if (drawable is BitmapDrawable)
+        {
             return drawable.bitmap
         }
 
@@ -253,14 +287,15 @@ open class CircularImageView @JvmOverloads constructor(context: Context, attrs: 
         return bitmap
     }
 
-    private fun isInCircle(x: Float, y: Float): Boolean {
+    private fun isInCircle(x: Float, y: Float): Boolean
+    {
         // find the distance between center of the view and x,y point
         val distance = Math.sqrt(Math.pow((mBitmapDrawBounds.centerX() - x).toDouble(), 2.0) + Math.pow((mBitmapDrawBounds.centerY() - y).toDouble(), 2.0))
-
         return distance <= mBitmapDrawBounds.width() / 2
     }
 
-    companion object {
-        private val DEF_PRESS_HIGHLIGHT_COLOR = 0x32000000
+    companion object
+    {
+        private const val DEF_PRESS_HIGHLIGHT_COLOR = 0x32000000
     }
 }

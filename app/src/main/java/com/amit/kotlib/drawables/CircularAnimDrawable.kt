@@ -4,34 +4,28 @@ import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.animation.AnimatorSet
 import android.animation.ValueAnimator
-import android.graphics.Canvas
-import android.graphics.ColorFilter
-import android.graphics.Paint
-import android.graphics.PixelFormat
-import android.graphics.Rect
-import android.graphics.RectF
+import android.graphics.*
 import android.graphics.drawable.Animatable
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
 
 class CircularAnimDrawable
 /**
  *
- * @param view View to be animated
- * @param borderWidth The width of the spinning bar
+ * @param mAnimatedView View to be animated
+ * @param mBorderWidth The width of the spinning bar
  * @param arcColor The color of the spinning bar
  */
-(private val mAnimatedView: View, private val mBorderWidth: Float, arcColor: Int) : Drawable(), Animatable {
-
+(private val mAnimatedView: View, private val mBorderWidth: Float, arcColor: Int) : Drawable(), Animatable
+{
     private val mAnimatorSet: AnimatorSet?
     private var mValueAnimatorAngle: ValueAnimator? = null
     private var mValueAnimatorSweep: ValueAnimator? = null
     private var mValueAnimatorProgress: ValueAnimator? = null
 
-    private val mPaint: Paint
+    private val mPaint: Paint = Paint()
     private val fBounds = RectF()
     private var mCurrentSweepAngle: Float = 0.toFloat()
     private var mCurrentGlobalAngle: Float = 0.toFloat()
@@ -44,9 +38,8 @@ class CircularAnimDrawable
     private var progress: Int = 0
     private var shownProgress: Float = 0.toFloat()
 
-    init {
-
-        mPaint = Paint()
+    init
+    {
         mPaint.isAntiAlias = true
         mPaint.style = Paint.Style.STROKE
         mPaint.strokeWidth = mBorderWidth
@@ -57,7 +50,8 @@ class CircularAnimDrawable
         mAnimatorSet = AnimatorSet()
     }
 
-    override fun onBoundsChange(bounds: Rect) {
+    override fun onBoundsChange(bounds: Rect)
+    {
         super.onBoundsChange(bounds)
 
         fBounds.left = bounds.left.toFloat() + mBorderWidth / 2f + .5f
@@ -66,15 +60,18 @@ class CircularAnimDrawable
         fBounds.bottom = bounds.bottom.toFloat() - mBorderWidth / 2f - .5f
     }
 
-    fun setLoadingBarColor(color: Int) {
+    fun setLoadingBarColor(color: Int)
+    {
         mPaint.color = color
     }
 
     /**
      * Start the animation
-     */
-    override fun start() {
-        if (isRunning) {
+    **/
+    override fun start()
+    {
+        if (isRunning)
+        {
             return
         }
 
@@ -82,16 +79,19 @@ class CircularAnimDrawable
         mAnimatorSet!!.playTogether(mValueAnimatorAngle, mValueAnimatorSweep)
         mAnimatorSet.start()
 
-        if (mValueAnimatorProgress != null && !mValueAnimatorProgress!!.isRunning) {
+        if (mValueAnimatorProgress != null && !mValueAnimatorProgress!!.isRunning)
+        {
             mValueAnimatorProgress!!.start()
         }
     }
 
     /**
      * Stops the animation
-     */
-    override fun stop() {
-        if (!isRunning) {
+    **/
+    override fun stop()
+    {
+        if (!isRunning)
+        {
             return
         }
 
@@ -103,48 +103,59 @@ class CircularAnimDrawable
      * Method the inform if the animation is in process
      *
      * @return
-     */
-    override fun isRunning(): Boolean {
+    **/
+    override fun isRunning(): Boolean
+    {
         return mRunning
     }
 
     /**
      * Method called when the drawable is going to draw itself.
      * @param canvas
-     */
-    override fun draw(canvas: Canvas) {
+    **/
+    override fun draw(canvas: Canvas)
+    {
         var startAngle = mCurrentGlobalAngle - mCurrentGlobalAngleOffset
         var sweepAngle = mCurrentSweepAngle
 
-        if (progress >= MIN_PROGRESS && progress <= MAX_PROGRESS) {
+        if (progress in MIN_PROGRESS..MAX_PROGRESS)
+        {
             startAngle = -90f
             sweepAngle = shownProgress
-        } else if (!mModeAppearing) {
-            startAngle = startAngle + sweepAngle
+        }
+        else if (!mModeAppearing)
+        {
+            startAngle += sweepAngle
             sweepAngle = 360f - sweepAngle - MIN_SWEEP_ANGLE
-        } else {
+        }
+        else
+        {
             sweepAngle += MIN_SWEEP_ANGLE
         }
 
         canvas.drawArc(fBounds, startAngle, sweepAngle, false, mPaint)
     }
 
-    override fun setAlpha(alpha: Int) {
+    override fun setAlpha(alpha: Int)
+    {
         mPaint.alpha = alpha
     }
 
-    override fun setColorFilter(colorFilter: ColorFilter?) {
+    override fun setColorFilter(colorFilter: ColorFilter?)
+    {
         mPaint.colorFilter = colorFilter
     }
 
-    override fun getOpacity(): Int {
+    override fun getOpacity(): Int
+    {
         return PixelFormat.TRANSPARENT
     }
 
     /**
      * Set up all the animations. There are two animation: Global angle animation and sweep animation.
-     */
-    private fun setupAnimations() {
+    **/
+    private fun setupAnimations()
+    {
         mValueAnimatorAngle = ValueAnimator.ofFloat(0F, 360f)
         mValueAnimatorAngle!!.interpolator = ANGLE_INTERPOLATOR
         mValueAnimatorAngle!!.duration = ANGLE_ANIMATOR_DURATION.toLong()
@@ -157,8 +168,10 @@ class CircularAnimDrawable
         mValueAnimatorSweep!!.duration = SWEEP_ANIMATOR_DURATION.toLong()
         mValueAnimatorSweep!!.repeatCount = ValueAnimator.INFINITE
 
-        mValueAnimatorSweep!!.addListener(object : AnimatorListenerAdapter() {
-            override fun onAnimationRepeat(animation: Animator) {
+        mValueAnimatorSweep!!.addListener(object : AnimatorListenerAdapter()
+        {
+            override fun onAnimationRepeat(animation: Animator)
+            {
                 toggleAppearingMode()
                 shouldDraw = false
             }
@@ -167,32 +180,37 @@ class CircularAnimDrawable
         mValueAnimatorSweep!!.addUpdateListener { animation ->
             mCurrentSweepAngle = animation.animatedValue as Float
 
-            if (mCurrentSweepAngle < 5) {
+            if (mCurrentSweepAngle < 5)
+            {
                 shouldDraw = true
             }
 
-            if (shouldDraw) {
+            if (shouldDraw)
+            {
                 mAnimatedView.invalidate()
             }
         }
-
         // progress animation is set up on each change of progress val
     }
 
     /**
      * This method is called in every repetition of the animation, so the animation make the sweep
      * growing and then make it shirinking.
-     */
-    private fun toggleAppearingMode() {
+    **/
+    private fun toggleAppearingMode()
+    {
         mModeAppearing = !mModeAppearing
 
-        if (mModeAppearing) {
+        if (mModeAppearing)
+        {
             mCurrentGlobalAngleOffset = (mCurrentGlobalAngleOffset + MIN_SWEEP_ANGLE * 2) % 360
         }
     }
 
-    fun dispose() {
-        if (mValueAnimatorAngle != null) {
+    fun dispose()
+    {
+        if (mValueAnimatorAngle != null)
+        {
             mValueAnimatorAngle!!.end()
             mValueAnimatorAngle!!.removeAllUpdateListeners()
             mValueAnimatorAngle!!.cancel()
@@ -200,7 +218,8 @@ class CircularAnimDrawable
 
         mValueAnimatorAngle = null
 
-        if (mValueAnimatorSweep != null) {
+        if (mValueAnimatorSweep != null)
+        {
             mValueAnimatorSweep!!.end()
             mValueAnimatorSweep!!.removeAllUpdateListeners()
             mValueAnimatorSweep!!.cancel()
@@ -208,8 +227,10 @@ class CircularAnimDrawable
 
         mValueAnimatorSweep = null
 
-        if (mValueAnimatorProgress != null) {
-            if (mValueAnimatorProgress!!.isRunning) {
+        if (mValueAnimatorProgress != null)
+        {
+            if (mValueAnimatorProgress!!.isRunning)
+            {
                 mValueAnimatorProgress!!.end()
             }
 
@@ -217,24 +238,29 @@ class CircularAnimDrawable
             mValueAnimatorProgress!!.cancel()
         }
 
-        if (mAnimatorSet != null) {
+        if (mAnimatorSet != null)
+        {
             mAnimatorSet.end()
             mAnimatorSet.cancel()
         }
     }
 
-    fun setProgress(progress: Int) {
-        if (this.progress == progress) {
+    fun setProgress(progress: Int)
+    {
+        if (this.progress == progress)
+        {
             return
         }
 
         this.progress = progress
 
-        if (progress < MIN_PROGRESS) {
+        if (progress < MIN_PROGRESS)
+        {
             shownProgress = 0f
         }
 
-        if (mValueAnimatorProgress == null) {
+        if (mValueAnimatorProgress == null)
+        {
             mValueAnimatorProgress = ValueAnimator.ofFloat(shownProgress, progress * 3.6f)
             mValueAnimatorProgress!!.interpolator = SWEEP_INTERPOLATOR
             mValueAnimatorProgress!!.duration = PROGRESS_ANIMATOR_DURATION.toLong()
@@ -243,29 +269,34 @@ class CircularAnimDrawable
                 shownProgress = animation.animatedValue as Float
                 mAnimatedView.invalidate()
             }
-        } else {
-            if (mValueAnimatorProgress!!.isRunning) {
+        }
+        else
+        {
+            if (mValueAnimatorProgress!!.isRunning)
+            {
                 mValueAnimatorProgress!!.cancel()
             }
 
             mValueAnimatorProgress!!.setFloatValues(shownProgress, progress * 3.6f)
         }
 
-        if (isRunning && progress >= MIN_PROGRESS) {
+        if (isRunning && progress >= MIN_PROGRESS)
+        {
             mValueAnimatorProgress!!.start()
         }
     }
 
-    companion object {
-        val MIN_PROGRESS = 0
-        val MAX_PROGRESS = 100
+    companion object
+    {
+        const val MIN_PROGRESS = 0
+        const val MAX_PROGRESS = 100
 
         private val ANGLE_INTERPOLATOR = LinearInterpolator()
         private val SWEEP_INTERPOLATOR = AccelerateDecelerateInterpolator()
 
-        private val MIN_SWEEP_ANGLE = 50f
-        private val SWEEP_ANIMATOR_DURATION = 700
-        private val ANGLE_ANIMATOR_DURATION = 2000
-        private val PROGRESS_ANIMATOR_DURATION = 200
+        private const val MIN_SWEEP_ANGLE = 50f
+        private const val SWEEP_ANIMATOR_DURATION = 700
+        private const val ANGLE_ANIMATOR_DURATION = 2000
+        private const val PROGRESS_ANIMATOR_DURATION = 200
     }
 }

@@ -3,11 +3,7 @@ package com.amit.kotlib.dialog
 import android.app.Dialog
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
 import android.os.Bundle
@@ -18,25 +14,30 @@ import android.view.animation.AnimationSet
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-
 import com.amit.kotlib.R
 import com.amit.kotlib.anim.AnimLoader
+import com.amit.kotlib.utilities.DeviceUtils
 import com.amit.kotlib.utilities.Utils
 
 /**
  * Created by Amit Jangid on 22,May,2018
- */
-class PromptDialogBox @JvmOverloads constructor(context: Context, theme: Int = 0) : Dialog(context, R.style.PromptDialogTheme) {
+**/
+@Suppress("unused", "DEPRECATION", "MemberVisibilityCanBePrivate", "UNUSED_PARAMETER")
+class PromptDialogBox @JvmOverloads constructor(context: Context, theme: Int = 0) : Dialog(context, R.style.PromptDialogTheme)
+{
     private var mAnimIn: AnimationSet? = null
     private var mAnimOut: AnimationSet? = null
 
     private var mDialogView: View? = null
+
     var titleTextView: TextView? = null
         private set
+
     var contentTextView: TextView? = null
         private set
+
     private var mPositiveBtn: TextView? = null
-    private var mOnPositiveListener: onPositiveListener? = null
+    private var mOnPositiveListener: OnPositiveListener? = null
 
     private var mDialogType: Int = 0
     private var mIsShowAnim: Boolean = false
@@ -44,23 +45,27 @@ class PromptDialogBox @JvmOverloads constructor(context: Context, theme: Int = 0
     private var mContent: CharSequence? = null
     private var mBtnText: CharSequence? = null
 
-    init {
+    init
+    {
         init()
     }
 
-    private fun init() {
+    private fun init()
+    {
         mAnimIn = AnimLoader.getInAnimation(context)
         mAnimOut = AnimLoader.getOutAnimation(context)
     }
 
-    override fun onCreate(savedInstanceState: Bundle) {
+    override fun onCreate(savedInstanceState: Bundle)
+    {
         super.onCreate(savedInstanceState)
 
         initView()
         initListener()
     }
 
-    private fun initView() {
+    private fun initView()
+    {
         val contentView = View.inflate(context, R.layout.layout_prompt_dialog, null)
         setContentView(contentView)
         resizeDialog()
@@ -81,7 +86,7 @@ class PromptDialogBox @JvmOverloads constructor(context: Context, theme: Int = 0
                 ViewGroup.LayoutParams.MATCH_PARENT, Utils.dp2px(context, 10f))
 
         triangleIv.setImageBitmap(createTriangle(
-                (Utils.getScreenSize(context).x * 0.9).toInt(),
+                (DeviceUtils.getScreenSize(context).x * 0.9).toInt(),
                 Utils.dp2px(context, 10f)))
 
         topLayout.addView(triangleIv)
@@ -105,37 +110,48 @@ class PromptDialogBox @JvmOverloads constructor(context: Context, theme: Int = 0
         titleTextView!!.setTextColor(context.resources.getColor(getColorResId(mDialogType)))
     }
 
-    private fun resizeDialog() {
+    private fun resizeDialog()
+    {
         val params = window!!.attributes
-        params.width = (Utils.getScreenSize(context).x * 0.9).toInt()
+        params.width = (DeviceUtils.getScreenSize(context).x * 0.9).toInt()
         window!!.attributes = params
     }
 
-    override fun onStart() {
+    override fun onStart()
+    {
         super.onStart()
         startWithAnimation(mIsShowAnim)
     }
 
-    override fun dismiss() {
+    override fun dismiss()
+    {
         dismissWithAnimation(mIsShowAnim)
     }
 
-    private fun startWithAnimation(showInAnimation: Boolean) {
-        if (showInAnimation) {
+    private fun startWithAnimation(showInAnimation: Boolean)
+    {
+        if (showInAnimation)
+        {
             mDialogView!!.startAnimation(mAnimIn)
         }
     }
 
-    private fun dismissWithAnimation(showOutAnimation: Boolean) {
-        if (showOutAnimation) {
+    private fun dismissWithAnimation(showOutAnimation: Boolean)
+    {
+        if (showOutAnimation)
+        {
             mDialogView!!.startAnimation(mAnimOut)
-        } else {
+        }
+        else
+        {
             super.dismiss()
         }
     }
 
-    private fun getLogoResId(mDialogType: Int): Int {
-        when (mDialogType) {
+    private fun getLogoResId(mDialogType: Int): Int
+    {
+        when (mDialogType)
+        {
             DIALOG_TYPE_DEFAULT ->
 
                 return R.drawable.ic_info
@@ -162,8 +178,10 @@ class PromptDialogBox @JvmOverloads constructor(context: Context, theme: Int = 0
         }
     }
 
-    private fun getColorResId(mDialogType: Int): Int {
-        when (mDialogType) {
+    private fun getColorResId(mDialogType: Int): Int
+    {
+        when (mDialogType)
+        {
             DIALOG_TYPE_DEFAULT ->
 
                 return R.color.color_type_info
@@ -190,8 +208,10 @@ class PromptDialogBox @JvmOverloads constructor(context: Context, theme: Int = 0
         }
     }
 
-    private fun getSelBtn(mDialogType: Int): Int {
-        when (mDialogType) {
+    private fun getSelBtn(mDialogType: Int): Int
+    {
+        when (mDialogType)
+        {
             DIALOG_TYPE_DEFAULT ->
 
                 return R.drawable.sel_btn
@@ -218,23 +238,29 @@ class PromptDialogBox @JvmOverloads constructor(context: Context, theme: Int = 0
         }
     }
 
-    private fun initAnimListener() {
-        mAnimOut!!.setAnimationListener(object : Animation.AnimationListener {
+    private fun initAnimListener()
+    {
+        mAnimOut!!.setAnimationListener(object : Animation.AnimationListener
+        {
             override fun onAnimationStart(animation: Animation) {}
 
-            override fun onAnimationEnd(animation: Animation) {
+            override fun onAnimationEnd(animation: Animation)
+            {
                 mDialogView!!.post { callDismiss() }
             }
 
-            override fun onAnimationRepeat(animation: Animation) {
+            override fun onAnimationRepeat(animation: Animation)
+            {
 
             }
         })
     }
 
-    private fun initListener() {
+    private fun initListener()
+    {
         mPositiveBtn!!.setOnClickListener {
-            if (mOnPositiveListener != null) {
+            if (mOnPositiveListener != null)
+            {
                 mOnPositiveListener!!.onClick(this@PromptDialogBox)
             }
         }
@@ -242,18 +268,22 @@ class PromptDialogBox @JvmOverloads constructor(context: Context, theme: Int = 0
         initAnimListener()
     }
 
-    private fun callDismiss() {
+    private fun callDismiss()
+    {
         super.dismiss()
     }
 
-    private fun createTriangle(width: Int, height: Int): Bitmap? {
-        return if (width <= 0 || height <= 0) {
+    private fun createTriangle(width: Int, height: Int): Bitmap?
+    {
+        return if (width <= 0 || height <= 0)
+        {
             null
-        } else getBitmap(width, height, context.resources.getColor(getColorResId(mDialogType)))
-
+        }
+        else getBitmap(width, height, context.resources.getColor(getColorResId(mDialogType)))
     }
 
-    private fun getBitmap(width: Int, height: Int, backgroundColor: Int): Bitmap {
+    private fun getBitmap(width: Int, height: Int, backgroundColor: Int): Bitmap
+    {
         val bitmap = Bitmap.createBitmap(width, height, BITMAP_CONFIG)
         val canvas = Canvas(bitmap)
 
@@ -269,14 +299,16 @@ class PromptDialogBox @JvmOverloads constructor(context: Context, theme: Int = 0
         return bitmap
     }
 
-    private fun setBtnBackground(btnOk: TextView) {
+    private fun setBtnBackground(btnOk: TextView)
+    {
         btnOk.setTextColor(createColorStateList(context.resources.getColor(getColorResId(mDialogType)),
                 context.resources.getColor(R.color.color_dialog_gray)))
 
         btnOk.background = context.resources.getDrawable(getSelBtn(mDialogType))
     }
 
-    private fun setBottomCorners(llBtnGroup: View) {
+    private fun setBottomCorners(llBtnGroup: View)
+    {
         val radius = Utils.dp2px(context, DEFAULT_RADIUS.toFloat())
         val outerRadii = floatArrayOf(0f, 0f, 0f, 0f, radius.toFloat(), radius.toFloat(), radius.toFloat(), radius.toFloat())
 
@@ -288,7 +320,8 @@ class PromptDialogBox @JvmOverloads constructor(context: Context, theme: Int = 0
         llBtnGroup.background = shapeDrawable
     }
 
-    private fun createColorStateList(normal: Int, pressed: Int, focused: Int = Color.BLACK, unable: Int = Color.BLACK): ColorStateList {
+    private fun createColorStateList(normal: Int, pressed: Int, focused: Int = Color.BLACK, unable: Int = Color.BLACK): ColorStateList
+    {
         val colors = intArrayOf(pressed, focused, normal, focused, unable, normal)
         val states = arrayOfNulls<IntArray>(6)
 
@@ -302,77 +335,91 @@ class PromptDialogBox @JvmOverloads constructor(context: Context, theme: Int = 0
         return ColorStateList(states, colors)
     }
 
-    fun setAnimationEnable(enable: Boolean): PromptDialogBox {
+    fun setAnimationEnable(enable: Boolean): PromptDialogBox
+    {
         mIsShowAnim = enable
         return this
     }
 
-    fun setTitleText(title: CharSequence): PromptDialogBox {
+    fun setTitleText(title: CharSequence): PromptDialogBox
+    {
         mTitle = title
         return this
     }
 
-    fun setTitleText(resId: Int): PromptDialogBox {
+    fun setTitleText(resId: Int): PromptDialogBox
+    {
         return setTitleText(context.getString(resId))
     }
 
-    fun setContentText(content: CharSequence): PromptDialogBox {
+    fun setContentText(content: CharSequence): PromptDialogBox
+    {
         mContent = content
         return this
     }
 
-    fun setContentText(resId: Int): PromptDialogBox {
+    fun setContentText(resId: Int): PromptDialogBox
+    {
         return setContentText(context.getString(resId))
     }
 
-    fun getDialogType(): Int {
+    fun getDialogType(): Int
+    {
         return mDialogType
     }
 
-    fun setDialogType(type: Int): PromptDialogBox {
+    fun setDialogType(type: Int): PromptDialogBox
+    {
         mDialogType = type
         return this
     }
 
-    fun setPositiveListener(btnText: CharSequence, l: onPositiveListener): PromptDialogBox {
+    fun setPositiveListener(btnText: CharSequence, l: OnPositiveListener): PromptDialogBox
+    {
         mBtnText = btnText
         return setPositiveListener(l)
     }
 
-    fun setPositiveListener(stringResId: Int, l: onPositiveListener): PromptDialogBox {
+    fun setPositiveListener(stringResId: Int, l: OnPositiveListener): PromptDialogBox
+    {
         return setPositiveListener(context.getString(stringResId), l)
     }
 
-    fun setPositiveListener(l: onPositiveListener): PromptDialogBox {
+    fun setPositiveListener(l: OnPositiveListener): PromptDialogBox
+    {
         mOnPositiveListener = l
         return this
     }
 
-    fun setAnimationIn(animIn: AnimationSet): PromptDialogBox {
+    fun setAnimationIn(animIn: AnimationSet): PromptDialogBox
+    {
         mAnimIn = animIn
         return this
     }
 
-    fun setAnimationOut(animOut: AnimationSet): PromptDialogBox {
+    fun setAnimationOut(animOut: AnimationSet): PromptDialogBox
+    {
         mAnimOut = animOut
         initAnimListener()
         return this
     }
 
-    interface onPositiveListener {
+    interface OnPositiveListener
+    {
         fun onClick(dialog: PromptDialogBox)
     }
 
-    companion object {
-        val DIALOG_TYPE_INFO = 0
-        val DIALOG_TYPE_HELP = 1
-        val DIALOG_TYPE_ERROR = 2
-        val DIALOG_TYPE_SUCCESS = 3
-        val DIALOG_TYPE_WARNING = 4
+    companion object
+    {
+        const val DIALOG_TYPE_INFO = 0
+        const val DIALOG_TYPE_HELP = 1
+        const val DIALOG_TYPE_ERROR = 2
+        const val DIALOG_TYPE_SUCCESS = 3
+        const val DIALOG_TYPE_WARNING = 4
 
-        val DIALOG_TYPE_DEFAULT = DIALOG_TYPE_INFO
+        const val DIALOG_TYPE_DEFAULT = DIALOG_TYPE_INFO
         private val BITMAP_CONFIG = Bitmap.Config.ARGB_8888
 
-        private val DEFAULT_RADIUS = 6
+        private const val DEFAULT_RADIUS = 6
     }
 }

@@ -1,6 +1,7 @@
 package com.amit.kotlib.interfaces
 
-interface CustomizeByCode {
+interface CustomizeByCode
+{
     fun setProgressBarWidth(width: Float)
     fun setProgressBarColor(color: Int)
     fun setDoneColor(color: Int)

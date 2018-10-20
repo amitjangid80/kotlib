@@ -1,20 +1,16 @@
 package com.amit.kotlib.shinebtn
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.PorterDuff
-import android.graphics.PorterDuffXfermode
+import android.graphics.*
 import android.graphics.drawable.ColorDrawable
 import android.support.v7.widget.AppCompatImageView
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.ImageView
 
-abstract class PorterImageView : AppCompatImageView {
-
+@Suppress("MemberVisibilityCanBePrivate", "UNUSED_PARAMETER", "NAME_SHADOWING", "DEPRECATION")
+abstract class PorterImageView : AppCompatImageView
+{
     internal var paintColor = Color.GRAY
     private var maskCanvas: Canvas? = null
     private var maskBitmap: Bitmap? = null
@@ -26,20 +22,25 @@ abstract class PorterImageView : AppCompatImageView {
 
     private var invalidated = true
 
-    constructor(context: Context) : super(context) {
+    constructor(context: Context) : super(context)
+    {
         setup(context, null, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+    constructor(context: Context, attrs: AttributeSet) : super(context, attrs)
+    {
         setup(context, attrs, 0)
     }
 
-    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle) {
+    constructor(context: Context, attrs: AttributeSet, defStyle: Int) : super(context, attrs, defStyle)
+    {
         setup(context, attrs, defStyle)
     }
 
-    private fun setup(context: Context, attrs: AttributeSet?, defStyle: Int) {
-        if (scaleType == ImageView.ScaleType.FIT_CENTER) {
+    private fun setup(context: Context, attrs: AttributeSet?, defStyle: Int)
+    {
+        if (scaleType == ImageView.ScaleType.FIT_CENTER)
+        {
             scaleType = ImageView.ScaleType.CENTER_CROP
         }
 
@@ -47,31 +48,37 @@ abstract class PorterImageView : AppCompatImageView {
         maskPaint!!.color = Color.BLACK
     }
 
-    fun setSrcColor(color: Int) {
+    fun setSrcColor(color: Int)
+    {
         paintColor = color
         setImageDrawable(ColorDrawable(color))
 
-        if (drawablePaint != null) {
+        if (drawablePaint != null)
+        {
             drawablePaint!!.color = color
             invalidate()
         }
     }
 
-    override fun invalidate() {
+    override fun invalidate()
+    {
         invalidated = true
         super.invalidate()
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int)
+    {
         super.onSizeChanged(w, h, oldw, oldh)
         createMaskCanvas(w, h, oldw, oldh)
     }
 
-    private fun createMaskCanvas(width: Int, height: Int, oldw: Int, oldh: Int) {
+    private fun createMaskCanvas(width: Int, height: Int, oldw: Int, oldh: Int)
+    {
         val sizeChanged = width != oldw || height != oldh
         val isValid = width > 0 && height > 0
 
-        if (isValid && (maskCanvas == null || sizeChanged)) {
+        if (isValid && (maskCanvas == null || sizeChanged))
+        {
             maskCanvas = Canvas()
             maskBitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
             maskCanvas!!.setBitmap(maskBitmap)
@@ -90,21 +97,30 @@ abstract class PorterImageView : AppCompatImageView {
 
     protected abstract fun paintMaskCanvas(maskCanvas: Canvas, maskPaint: Paint, width: Int, height: Int)
 
-    override fun onDraw(canvas: Canvas) {
-        if (!isInEditMode) {
+    override fun onDraw(canvas: Canvas)
+    {
+        if (!isInEditMode)
+        {
             val saveCount = canvas.saveLayer(0.0f, 0.0f, width.toFloat(), height.toFloat(), null, Canvas.ALL_SAVE_FLAG)
 
-            try {
-                if (invalidated) {
+            try
+            {
+                if (invalidated)
+                {
                     val drawable = drawable
 
-                    if (drawable != null) {
+                    if (drawable != null)
+                    {
                         invalidated = false
                         val imageMatrix = imageMatrix
 
-                        if (imageMatrix == null) {// && mPaddingTop == 0 && mPaddingLeft == 0) {
+                        if (imageMatrix == null)
+                        {
+                            // && mPaddingTop == 0 && mPaddingLeft == 0) {
                             drawable.draw(drawableCanvas!!)
-                        } else {
+                        }
+                        else
+                        {
                             val drawableSaveCount = drawableCanvas!!.saveCount
                             drawableCanvas!!.save()
                             drawableCanvas!!.concat(imageMatrix)
@@ -119,36 +135,48 @@ abstract class PorterImageView : AppCompatImageView {
                     }
                 }
 
-                if (!invalidated) {
+                if (!invalidated)
+                {
                     drawablePaint!!.xfermode = null
                     canvas.drawBitmap(drawableBitmap!!, 0.0f, 0.0f, drawablePaint)
                 }
-            } catch (e: Exception) {
+            }
+            catch (e: Exception)
+            {
                 val log = "Exception occured while drawing $id"
                 Log.e(TAG, log, e)
-            } finally {
+            }
+            finally
+            {
                 canvas.restoreToCount(saveCount)
             }
-        } else {
+        }
+        else
+        {
             super.onDraw(canvas)
         }
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int)
+    {
         var widthMeasureSpec = widthMeasureSpec
         var heightMeasureSpec = heightMeasureSpec
-        if (widthMeasureSpec == 0) {
+
+        if (widthMeasureSpec == 0)
+        {
             widthMeasureSpec = 50
         }
 
-        if (heightMeasureSpec == 0) {
+        if (heightMeasureSpec == 0)
+        {
             heightMeasureSpec = 50
         }
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
     }
 
-    companion object {
+    companion object
+    {
         private val TAG = PorterImageView::class.java.simpleName
         private val PORTER_DUFF_XFERMODE = PorterDuffXfermode(PorterDuff.Mode.DST_IN)
     }
