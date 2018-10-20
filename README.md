@@ -1,6 +1,6 @@
 # kotlib
 
-Tag: [![](https://jitpack.io/v/amitjangid80/kotlib.svg)](https://jitpack.io/#amitjangid80/kotlib)
+[![](https://jitpack.io/v/amitjangid80/kotlib.svg)](https://jitpack.io/#amitjangid80/kotlib)
 
 
 ### Usage
@@ -15,6 +15,6 @@ allprojects {
  
 ```
 dependencies {
-    implementation 'com.github.amitjangid80:kotlib:Tag'
+    implementation 'com.github.amitjangid80:kotlib:1.0.3'
 }
 ```
